@@ -1,0 +1,9 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "engineering-handoff-skills",
+  "version": "0.1.0",
+  "description": "Prepare and verify local engineering artifact handoffs with explicit evidence limits.",
+  "author": { "name": "Huzaifa Asif" },
+  "repository": "https://github.com/Huzaifa-Asif/engineering-handoff-skills",
+  "license": "MIT"
+}

@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "artifacts": [
+    { "id": "source", "path": "source.txt", "role": "deliverable" },
+    { "id": "test-log", "path": "test-evidence.txt", "role": "evidence", "expiresAt": "2030-01-01T00:00:00Z" }
+  ],
+  "checks": [{ "id": "unit-tests", "status": "passed", "subjects": ["source"], "evidence": "test-log",
+    "subjectDigests": { "source": "7fe5a7b4261718e83bd08ee52844d72a973f162798b2dd612168730d12448bf5" } }]
+}

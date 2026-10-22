@@ -1,0 +1,58 @@
+{
+  "originalComposition": true,
+  "method": "macOS AppKit vector drawing with native system typography",
+  "referenceSeries": "User-provided earlier Grafana engineering article covers",
+  "referenceBytes": [
+    {
+      "cover": 1,
+      "sha256": "de25608c8b1453c565c83adb4bc6c4efb18a3f74f9e54f32ca8b02802255a02e",
+      "verifiedLocalBytes": true,
+      "pixelsInspected": true
+    },
+    {
+      "cover": 2,
+      "sha256": "d44953336df15f9852de0fa23e261b543fb7b5479a359b589fd2b05732529e64",
+      "verifiedLocalBytes": true,
+      "pixelsInspected": true
+    },
+    {
+      "cover": 3,
+      "sha256": "e6eb54d334f39ce0995128e8e44e3714adcc43c1868bdda8fe16fee9959f7bbe",
+      "verifiedLocalBytes": true,
+      "pixelsInspected": true
+    },
+    {
+      "cover": 4,
+      "sha256": "0b5c5070084e5126de562fc8b47ebeb6123d792ce43505c085cddd0fce104e4e",
+      "verifiedLocalBytes": true,
+      "pixelsInspected": true
+    },
+    {
+      "cover": 5,
+      "sha256": "71ed6b0fcac107afc8044acff447f6bd547d148dd17d1373d53f617f7841a4f5",
+      "verifiedLocalBytes": true,
+      "pixelsInspected": true
+    }
+  ],
+  "dimensions": [
+    1672,
+    941
+  ],
+  "sha256": "02887db81a87fb3b14925d21c7a2ddb17be9eb05b49b184c8b4880149a9179ea",
+  "qa": {
+    "fullSizeInspected": true,
+    "halfSizeThumbnailInspected": true,
+    "wideCrop1672x875Inspected": true,
+    "textSafeMarginPixels": 64,
+    "titleSizePixels": 72,
+    "bodyTextMinimumPixels": 19,
+    "contrastOnPanel": {
+      "F5F8FF": 15.04,
+      "A5B8D0": 7.89,
+      "57D9FF": 9.72,
+      "FFD44F": 11.25
+    },
+    "trademarksOrExtractedArtworkCopied": false,
+    "editorialPublication": "not performed"
+  }
+}

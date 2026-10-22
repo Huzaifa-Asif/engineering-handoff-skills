@@ -1,0 +1,1 @@
+Synthetic saved observation for the example only. No real test execution is asserted.

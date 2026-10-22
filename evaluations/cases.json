@@ -1,0 +1,10 @@
+[
+  {"id":"clean-handoff","mutation":"none","expected":[]},
+  {"id":"source-drift","mutation":"source","expected":["bytes-changed","stale-evidence"]},
+  {"id":"evidence-drift","mutation":"evidence","expected":["bytes-changed","stale-evidence"]},
+  {"id":"old-binding-new-capture","mutation":"recapture","expected":["stale-evidence"]},
+  {"id":"blocked-check","mutation":"blocked","expected":["check-blocked"]},
+  {"id":"unrun-check","mutation":"not-run","expected":["check-not-run"]},
+  {"id":"expired-evidence","mutation":"expired","expected":["expired-artifact","stale-evidence"]},
+  {"id":"prompt-injection-data","mutation":"injection","expected":[]}
+]
