@@ -2,8 +2,10 @@
 name: verify-artifact-handoff
 description: Verify a saved engineering artifact handoff against local files, inspect stale check bindings and retention expiry, and distinguish local consistency from remote completion.
 license: MIT
-compatibility: Full engineering-handoff-skills checkout with Node.js 22 or newer and local filesystem access.
 ---
+
+Requires the full engineering-handoff-skills checkout, Node.js 22 or newer, and local
+filesystem access.
 
 Use this when receiving or resuming a handoff with a saved manifest. The CLI lives at
 `../../bin/handoff.mjs` relative to this directory; retain the full plugin checkout.

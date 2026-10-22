@@ -1,5 +1,29 @@
 # Validation record
 
+## 0.1.1 metadata compatibility patch
+
+The optional `compatibility` frontmatter field was moved into each skill's readable
+body, preserving the full-checkout, Node.js 22+ and local-filesystem guidance. The current
+Agent Skills specification permits the field, but the bundled Codex skill-creator
+validator rejects it. The patch avoids that validator friction without changing the
+runtime, API, skill scope or assurance limits. The v0.1.0 tag/release remains preserved.
+
+Validation on macOS arm64, Node.js v24.18.1:
+
+- Both source skills passed the unchanged bundled `quick_validate.py`, using PyYAML
+  6.0.3 installed from official PyPI in a temporary isolated Python 3.14 environment.
+- Both source skills passed the Agent Skills `skills-ref` 0.1.1 reference validator
+  (`agentskills validate`) installed in the same temporary environment.
+- Both packaged skills also passed the bundled validator.
+- `npm run check`, build and packaged checks passed: 38 tests, eight workflow cases,
+  the runnable example and custom lint. No project dependencies were installed.
+
+Exact-commit CI, independent patch review and release asset checks are recorded in the
+patch release report. Earlier validation history below is retained as history, including
+the initial unavailable validator and the subsequently demonstrated field mismatch.
+
+## 0.1.0 original implementation
+
 Local validation performed on 2026-10-22 UTC (2026-10-23 MYT), macOS arm64,
 Node.js v24.18.1:
 

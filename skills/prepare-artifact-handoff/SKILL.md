@@ -2,8 +2,10 @@
 name: prepare-artifact-handoff
 description: Prepare a local engineering handoff with byte-bound evidence and explicit unfinished checks when passing artifacts to another person or agent.
 license: MIT
-compatibility: Full engineering-handoff-skills checkout with Node.js 22 or newer and local filesystem access.
 ---
+
+Requires the full engineering-handoff-skills checkout, Node.js 22 or newer, and local
+filesystem access.
 
 Prepare a handoff another engineer can verify without trusting the completion narrative.
 Use this for selected local deliverables, not deployment, publication, credential handling,
