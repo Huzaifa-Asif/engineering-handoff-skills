@@ -1,5 +1,11 @@
 # Evaluation approach
 
+`node evaluations/observations.mjs` additionally replays seven observation workflows:
+unchanged handoff, interval drift, blocked/not-run work, exact expiry, untrusted log
+instructions and changed evidence after finish. `node examples/observe.mjs` separately
+executes a real known synthetic calculator test outside the helper, with actual command,
+observation time and result saved in its evidence. The helper itself never runs commands.
+
 `node evaluations/run.mjs` replays eight synthetic workflow cases through the real core:
 clean handoff, source drift, evidence drift, old observation under a new capture, blocked
 check, not-run check, expiry and malicious evidence text. Fixtures are created in an

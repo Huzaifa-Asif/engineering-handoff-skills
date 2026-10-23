@@ -38,7 +38,7 @@
     1672,
     941
   ],
-  "sha256": "02887db81a87fb3b14925d21c7a2ddb17be9eb05b49b184c8b4880149a9179ea",
+  "sha256": "70eb8e4b60faece0b3e6e24aba5a84e425a6da1fe6a664baf576834f3d4c5ca9",
   "qa": {
     "fullSizeInspected": true,
     "halfSizeThumbnailInspected": true,
@@ -53,6 +53,9 @@
       "FFD44F": 11.25
     },
     "trademarksOrExtractedArtworkCopied": false,
-    "editorialPublication": "not performed"
-  }
+    "editorialPublication": "not performed",
+    "referenceContactSheetInspected": true
+  },
+  "release": "0.2.0",
+  "verifiedOn": "2026-10-24 MYT"
 }

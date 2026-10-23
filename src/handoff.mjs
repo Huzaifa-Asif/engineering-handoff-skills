@@ -112,6 +112,8 @@ function validate(doc, manifest) {
   return byId;
 }
 
+export function validateManifest(doc) { return validate(doc, true); }
+
 export function capture(root, plan, at = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z')) {
   validate(plan, false); const now = timestamp(at); let total = 0;
   const artifacts = plan.artifacts.map(a => {

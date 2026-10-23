@@ -40,7 +40,8 @@ selected-file contract with stale-evidence propagation and portable workflow ins
 
 Use Node built-ins and plain `.mjs` for the local helper: no runtime/dev dependencies,
 install lifecycle, credentials, remote server, paid service or model invocation. The CLI
-has capture/verify operations only. The library separates bounded file reads, schema
+originally had capture/verify operations only. Version 0.2 adds the bounded observation
+workflow described in [dated observation research](observation-research.md). The library separates bounded file reads, schema
 validation, snapshot construction and reports. It never parses evidence content as code.
 
 The repository code, prose, fixtures and diagram assets are newly authored under MIT.

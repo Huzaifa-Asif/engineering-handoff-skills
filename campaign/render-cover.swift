@@ -72,10 +72,10 @@ for i in 0..<6 {
   p.line(to:NSPoint(x:1672,y:0)); p.line(to:NSPoint(x:0,y:0)); p.close()
   color(i % 2 == 0 ? 0x10151C : 0x05090F,0.55).setFill(); p.fill()
 }
-text("ENGINEERING SKILLS  •  ARTIFACT HANDOFFS",96,70,30,gold,.semibold)
+text("ENGINEERING SKILLS  •  CHECK OBSERVATIONS",96,70,30,gold,.semibold)
 
 panel(112,224,400,374,cyan)
-text("DELIVERABLE",140,307,26,white,.bold)
+text("START",140,307,26,white,.bold)
 text("source + config",140,354,24,muted,mono:true)
 for (i,w) in [CGFloat(300),220,270].enumerated() {
   color(0x355273).setFill(); NSBezierPath(roundedRect:rect(140,408+CGFloat(i)*27,w,8),xRadius:4,yRadius:4).fill()
@@ -84,14 +84,14 @@ pill("sha256  7fe5…8bf5",140,519,340,cyan)
 
 arrow(530,410,594,410)
 panel(612,263,448,300,gold)
-text("OBSERVATION",640,345,26,white,.bold)
-text("Tests + exact file hashes",640,391,23,muted)
-pill("passed  •  recorded",640,448,387,gold)
+text("CHECK",640,345,26,white,.bold)
+text("Run an authorized check",640,391,23,muted)
+pill("status • self-reported",640,448,387,gold)
 
 arrow(1078,410,1142,410)
 panel(1160,224,400,374,cyan)
-text("HANDOFF",1188,307,26,white,.bold)
-let labels = ["Bytes match", "Evidence is current", "Remote: unverified"]
+text("FINISH",1188,307,26,white,.bold)
+let labels = ["Compare subjects", "Capture evidence", "No execution proof"]
 for (i,label) in labels.enumerated() {
   let y = CGFloat(368+i*61)
   let tint = i == 2 ? gold : cyan
@@ -100,8 +100,8 @@ for (i,label) in labels.enumerated() {
 }
 line(1189,547,1526,547,color(0x30435F),1)
 
-text("Did these files pass?",96,717,72,white,.bold)
-text("Byte-bound evidence for engineering handoffs",100,816,31,gold,.medium)
+text("Did your inputs change?",96,717,72,white,.bold)
+text("Record checks without copying hashes",100,816,31,gold,.medium)
 NSGraphicsContext.restoreGraphicsState()
 let output = CommandLine.arguments.count > 1 ? CommandLine.arguments[1] : "campaign/cover.png"
 try bitmap.representation(using: .png, properties: [:])!.write(to:URL(fileURLWithPath:output))

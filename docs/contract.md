@@ -1,5 +1,8 @@
 # Handoff contract v1
 
+Version 0.2 adds a separate [check-observation workflow](observations.md) producing this
+existing manifest format. Capture/verify v1 inputs and semantics remain supported.
+
 Both plan and manifest are UTF-8 JSON objects, limited to 256 KiB. Unknown fields are
 rejected. JSON follows `JSON.parse` semantics (duplicate object keys use the final value);
 producers should emit unique keys. `schemaVersion` must be numeric `1`.

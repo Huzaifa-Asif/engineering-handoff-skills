@@ -17,3 +17,9 @@ of raw logs, and never include credentials or private account/session material.
 organizational retention policy. At expiry the tool flags attention and leaves files
 intact. Remove files only within separately authorized scope. GitHub and any agent client
 used to access this repository have their own privacy practices.
+
+Observation sessions and finish manifests also contain selected paths, IDs and hashes.
+Only the nested finish report is redacted. A session is stateless/editable and can be
+finished repeatedly; it is not a one-use token. Explicit session expiry refuses finish
+without deleting files. Reviewed evidence bytes are captured at finish; no log text is
+executed or interpreted. Session/control files are individually size-bounded.

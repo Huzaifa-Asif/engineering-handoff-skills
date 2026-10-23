@@ -20,6 +20,8 @@ or ordinary prose editing. Keep the complete plugin checkout: the CLI is at
    covers, including configuration or dependencies that affect its result. Hash those
    subjects before running the authorized check and again afterward. A change means the
    observation cannot be attached to the new bytes; rerun only if authorized and useful.
+   For a check that has not yet run, [record-check-observation](../record-check-observation/SKILL.md)
+   automates the before/after hashing and produces a directly verifiable finish manifest.
 3. Save a minimal, manually reviewed evidence file with the actual command, exit result,
    observation time and relevant summary. Redact secrets, account identifiers and private
    paths before saving. Do not call a test passed from a proposed command, a simulated

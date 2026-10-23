@@ -1,6 +1,6 @@
 {
   "name": "engineering-handoff-skills",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "description": "Portable engineering handoff skills and a bounded offline evidence verifier",
@@ -9,7 +9,7 @@
   "scripts": {
     "test": "node --test test/*.test.mjs",
     "lint": "node scripts/check.mjs",
-    "check": "npm run lint && npm test && node examples/run.mjs && node evaluations/run.mjs",
+    "check": "npm run lint && npm test && node examples/run.mjs && node examples/observe.mjs && node evaluations/run.mjs && node evaluations/observations.mjs",
     "build": "node scripts/build.mjs"
   }
 }

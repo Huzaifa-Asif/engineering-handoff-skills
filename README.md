@@ -1,8 +1,11 @@
 # Engineering Handoff Skills
 
 Pass an engineering artifact to the next person with evidence tied to the bytes they
-actually receive. This repository combines two portable skills with an original,
+actually receive. This repository combines three portable skills with an original,
 dependency-free offline tool for artifact snapshots, check bindings and retention review.
+Version 0.2 adds start/finish observations: record selected inputs before an authorized
+check, compare final bytes, and receive a manifest with the exact reviewed evidence.
+The helper never executes that check.
 
 A saved “tests passed” log is easy to carry forward after the source changes. This tool
 preserves the source hashes recorded at observation time, compares them with the handoff,
@@ -22,6 +25,7 @@ is needed to run the tool. The package is private and is not an npm publication.
 git clone https://github.com/Huzaifa-Asif/engineering-handoff-skills.git
 cd engineering-handoff-skills
 node examples/run.mjs
+node examples/observe.mjs
 ```
 
 The example captures synthetic files, verifies consistency, changes a deliverable and
@@ -53,20 +57,49 @@ Capture output includes paths and hashes. Verification output is redacted by con
 }
 ```
 
+## Record a new check without copying hashes
+
+`node examples/observe.mjs` executes a known synthetic calculator test outside the
+observation helper, records its actual exit/output, finishes the observation, verifies
+the result and demonstrates drift detection. It operates only in its own temporary root.
+
+For your own check, create a request naming the check, its subject IDs/paths and a future
+session expiry. Use `observe-start`, perform the actual authorized check separately,
+save reviewed/redacted evidence, then use `observe-finish` with the honest status. Save
+the finish result's exact `manifest` field and verify it. If subjects changed, that field
+is null; do not rewrite the session to suppress the finding. Failed/blocked/not-run
+statuses remain explicit. Read [the request/API contract](docs/observations.md).
+
+```js
+import { startObservation, finishObservation } from './src/observation.mjs';
+// Save the start session to a new selected file, run the separately authorized check,
+// then finish with its actual status and reviewed evidence. No command is accepted.
+const result = finishObservation('./handoff', {
+  schemaVersion: 1, sessionFile: 'session.json', status: 'passed',
+  evidence: { id: 'test-log', path: 'test-evidence.txt' }
+});
+// result.report is redacted; result.manifest contains selected paths/IDs/hashes.
+// Save a present manifest exactly; do not recapture its evidence later.
+```
+
+Matching before/after bytes cannot detect restored-byte edits, forged logs/sessions,
+environment changes or unselected dependencies. A status is still self-reported.
+
 ## Skills and supported packaging
 
 | Skill | Use it when |
 | --- | --- |
 | [prepare-artifact-handoff](skills/prepare-artifact-handoff/SKILL.md) | Preparing selected files, actual check evidence and a reviewable handoff |
 | [verify-artifact-handoff](skills/verify-artifact-handoff/SKILL.md) | Receiving/resuming a handoff or checking whether evidence became stale |
+| [record-check-observation](skills/record-check-observation/SKILL.md) | Recording a new check with before/after subject hashing and reviewed evidence |
 
 The root `plugin.json` uses Agent Plugins schema 1.0.0 with fixed `skills/` discovery.
 The skills also use the Agent Skills `SKILL.md` format. Keep the **whole checkout** when
-using either skill: both rely on the shared `bin/`, `src/` and `docs/` files. Do not copy a
+using any skill: they rely on the shared `bin/`, `src/` and `docs/` files. Do not copy a
 single skill folder into a global skills directory and expect the shared tool to follow.
 
 For a client that accepts a local portable plugin, select the repository root through
-that client's plugin installation UI and verify the two skill names appear. Client
+that client's plugin installation UI and verify the three skill names appear. Client
 support and installation paths vary; see the [current official packaging guide](https://developers.openai.com/plugins/build/plugins).
 You can also explicitly provide the SKILL.md path to an agent with local file tools.
 No host-client installation, marketplace acceptance or directory listing is claimed.
@@ -84,11 +117,16 @@ This is a local CLI/skills package, with no MCP server, hooks, authentication or
 5. Independently verify remote facts if the handoff claims a commit, push, exact-commit CI,
    release or publication. The offline report cannot establish any of them.
 
-CLI: `node bin/handoff.mjs capture|verify <root> <relative-json-path> [--at <UTC>]`.
+CLI: `node bin/handoff.mjs capture|verify|observe-start|observe-finish <root> <relative-json-path> [--at <UTC>]`.
 Exit 0 means capture succeeded or verification is consistent; 2 means verification
 completed with issues; 1 means invalid input/operational failure. A report's indices are
 zero-based positions in the private input manifest. API exports are documented in
 [the contract](docs/contract.md).
+
+For observations, start succeeds with exit 0; finish returns 0 for recorded unchanged
+passed status, 2 for attention, and 1 for schema/operational errors. Only its nested
+report is redacted; session/manifest output contains selected metadata. Session expiry
+refuses finish and leaves files intact.
 
 ## Boundaries and limitations
 
@@ -131,6 +169,10 @@ For stale evidence, preserve the old result and rerun relevant checks only when 
 For expiry, review retention with the owner. For `size-limit`, choose a smaller handoff.
 For `future-capture`, check the clock; do not backdate a current review to hide expiry.
 Do not paste private input to an issue: use a minimal synthetic reproduction.
+
+For `subject-changed-during-observation`, preserve the original session/result and rerun
+a new observation only when authorized. For `observation-expired`, start a new session
+before a new check; do not backdate it. See [observation error semantics](docs/observations.md).
 
 See [CONTRIBUTING](CONTRIBUTING.md), [conduct](CODE_OF_CONDUCT.md),
 [security](SECURITY.md), [privacy](PRIVACY.md), [changelog](CHANGELOG.md) and

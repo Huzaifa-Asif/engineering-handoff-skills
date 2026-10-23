@@ -1,5 +1,37 @@
 # Validation record
 
+## 0.2.0 check observations — 2026-10-24 MYT
+
+Local checks on macOS arm64, Node.js v24.18.1:
+
+- 59 tests passed, including new start/finish, status, schema, path, clock, expiry,
+  injection, redaction, evidence-change and byte-restoration limitation cases.
+- Eight existing and seven new observation workflow replays passed. These are
+  deterministic tool/task cases; no model-level success or causal skill lift is claimed.
+- Both examples passed. The new example actually runs a known synthetic calculator test
+  outside the helper, records its command/time/exit/output and verifies the finish manifest.
+- Custom syntax/JSON/whitespace/skill-reference/manifest lint, build and packaged checks
+  passed. There are no project runtime or development dependencies and no install step.
+- Both validators passed for all three source and packaged skills: bundled quick_validate.py
+  with PyYAML 6.0.3, and Agent Skills skills-ref 0.1.1. Existing isolated verification tools
+  were reused; neither Python tool is a project dependency.
+- Local test coverage: observation module 100% lines/branches/functions; existing core
+  100% lines/functions, 97.87% branches; CLI 100% lines/branches/functions. This measures
+  executed paths, not authenticity, correctness of logs, or complete dependency selection.
+
+Independent new-code review and forward-testing returned GO within the documented
+self-reported snapshot scope. A real synthetic calculator test ran; source drift removed
+the finish manifest; malicious log instructions stayed inert and canaries were absent
+from reports; blocked status stayed blocked; expiry rejected finish without deleting files
+or reading subject/evidence artifacts. 99 subjects plus evidence round-tripped; 100 plus
+evidence was refused. Malformed-session errors stayed redacted. The reviewer requested
+accurate evidence time/command text in the example; both were added. Release docs were updated.
+
+Exact commit, CI, downloaded release-asset hashes and final independent disposition are
+recorded in the release report. No host-client installation, marketplace publication,
+remote execution proof or npm publication is claimed. Model/reasoning selection remains
+unexposed and unverified on this executor. Earlier version records below are retained.
+
 ## 0.1.1 metadata compatibility patch
 
 The optional `compatibility` frontmatter field was moved into each skill's readable
