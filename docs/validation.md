@@ -1,5 +1,38 @@
 # Validation record
 
+## 0.3.0 required-check set review — 2026-10-25 MYT
+
+Local macOS arm64 / Node.js v24.18.1 source and built-package checks passed:
+
+- 82 tests, 23 deterministic workflows and three examples. The set example actually
+  executes fixed synthetic unit/syntax commands outside the helper and records their
+  exact command/time/runtime/exit. Syntax selects source; unit tests also select tests.
+- Custom syntax/JSON/whitespace/skill-link/manifest lint, distribution build, packaged
+  check and `git diff --check`. No TypeScript checker applies to plain JavaScript.
+- Both bundled skill-creator and Agent Skills reference validators passed all four
+  skills in source and built-package trees (16 checks), using the existing isolated
+  PyYAML 6.0.3 / skills-ref 0.1.1 tools. No installation or system-Python change today.
+- New set-review module 100% line/branch/function coverage. Core 100% lines/functions,
+  98.02% branches; observation/CLI 100%; aggregate branches 99.01%.
+- Zero runtime/development/optional project dependencies. Production import review
+  found only relative modules and fs/path/crypto built-ins; no network, subprocess or
+  dynamic evaluation in the core. No third-party vulnerability scanner result is claimed.
+
+Independent forward testing ran real synthetic unit and newline/whitespace lint commands
+with separate observations, reviewed complete/incomplete/blocked/conflicting/injected/
+expired/malformed records, and found no blocker. Instrumented independent budget testing
+confirmed that five actual 16 MiB artifact reads with declared sizes of one byte each
+ingested exactly 64 MiB and refused the fifth; failed/racing reads consumed allowance,
+while empty files remained readable at zero. The review emitted no input-derived strings,
+did not execute log requests, and did not delete expired evidence. Final independent
+disposition and exact remote commit/CI/archive results are recorded in the release report.
+
+These are tool/workflow tests and representative independent skill tasks, not model-level
+success/lift, execution authentication, client installation or directory acceptance.
+The requested runtime model/reasoning selection remains unexposed and unverified.
+Launch drafts are outside the checkout and build tree; staged paths and archive entries
+are inspected before the first push. Earlier validation records are preserved below.
+
 ## 0.2.0 check observations — 2026-10-24 MYT
 
 Local checks on macOS arm64, Node.js v24.18.1:

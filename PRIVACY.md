@@ -1,5 +1,11 @@
 # Privacy and retention
 
+Required-check set review reads explicitly named manifests in one selected root. It
+does not discover records, merge files or recapture evidence. Its requirement list and
+original manifests contain private IDs/paths; only the fixed-code review report omits
+input-derived strings. Structural counts/indices remain visible. All non-passed and
+expiry states are preserved; nothing is deleted or renewed by set review.
+
 The CLI reads only the explicitly selected plan/manifest and its listed local files.
 It performs no network calls, telemetry, authentication, recursive collection, database
 storage or automatic deletion. It writes results only to stdout/stderr; the caller owns

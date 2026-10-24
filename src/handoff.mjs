@@ -36,7 +36,12 @@ export function safeRelative(value) {
 
 // Read only selected regular files. No traversal, URL fetching, subprocesses or file writes.
 // Component checks are defense in depth, not a sandbox against hostile concurrent renames.
-export function readSelected(root, relative, maximum = LIMITS.fileBytes) {
+export function readSelected(root, relative, maximum = LIMITS.fileBytes, budget) {
+  if (budget !== undefined) {
+    requireThat(record(budget) && Number.isSafeInteger(budget.remaining) &&
+      budget.remaining >= 0 && budget.remaining <= LIMITS.totalBytes, 'invalid-read-budget');
+    maximum = Math.min(maximum, budget.remaining);
+  }
   const parts = safeRelative(relative);
   const base = path.resolve(root);
   requireThat(!fs.lstatSync(base).isSymbolicLink() && fs.statSync(base).isDirectory(), 'invalid-root');
@@ -52,6 +57,9 @@ export function readSelected(root, relative, maximum = LIMITS.fileBytes) {
     const before = fs.fstatSync(fd);
     requireThat(before.isFile(), 'not-regular-file');
     requireThat(before.size <= maximum, 'size-limit');
+    // Charge the shared budget before ingestion, including failed/racing reads.
+    // Each bounded read may additionally inspect one growth-detection sentinel byte.
+    if (budget !== undefined) budget.remaining -= before.size;
     // Bound reads even if another process grows a file after fstat.
     const buffer = Buffer.alloc(Math.min(before.size + 1, maximum + 1));
     let length = 0;
@@ -130,7 +138,7 @@ export function capture(root, plan, at = new Date().toISOString().replace(/\.\d{
   return result;
 }
 
-export function verify(root, manifest, at = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z')) {
+export function verify(root, manifest, at = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z'), budget) {
   const byId = validate(manifest, true); const now = timestamp(at);
   requireThat(timestamp(manifest.capturedAt) <= now, 'future-capture');
   let total = 0; const issues = []; const invalid = new Set();
@@ -140,7 +148,7 @@ export function verify(root, manifest, at = new Date().toISOString().replace(/\.
       issue('expired-artifact', 'artifact', index); invalid.add(a.id);
     }
     try {
-      const bytes = readSelected(root, a.path, Math.min(LIMITS.fileBytes, LIMITS.totalBytes - total)); total += bytes.length;
+      const bytes = readSelected(root, a.path, Math.min(LIMITS.fileBytes, LIMITS.totalBytes - total), budget); total += bytes.length;
       requireThat(total <= LIMITS.totalBytes, 'size-limit');
       if (bytes.length !== a.sizeBytes || createHash('sha256').update(bytes).digest('hex') !== a.sha256) {
         issue('bytes-changed', 'artifact', index); invalid.add(a.id);

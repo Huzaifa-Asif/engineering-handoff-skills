@@ -1,5 +1,9 @@
 # Handoff contract v1
 
+Version 0.3 adds [required-check set review](review-set.md) over separate v1 manifests.
+It does not merge or recapture records; all original capture timestamps remain intact.
+Optional shared read-budget arguments are described in that API reference.
+
 Version 0.2 adds a separate [check-observation workflow](observations.md) producing this
 existing manifest format. Capture/verify v1 inputs and semantics remain supported.
 

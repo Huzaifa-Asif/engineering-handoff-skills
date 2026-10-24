@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.3.0 — 2026-10-25 MYT
+
+- Add bounded review-set command/API and review-required-checks skill for explicit
+  required subject/check pairs across separate saved observation manifests.
+- Detect cross-manifest artifact/path/check conflicts; preserve missing, non-passed,
+  stale and expired evidence without merging or manufacturing capture timestamps.
+- Share a charged artifact read budget across repeated manifest verifications. Add
+  runnable two-check example, representative workflows, regression cases and API guide.
+- Preserve v1 formats, prior commands/releases, MIT notices and dependency-free runtime.
+
 ## 0.2.0 — 2026-10-24 MYT
 
 - Add bounded observe-start/observe-finish commands and startObservation/finishObservation

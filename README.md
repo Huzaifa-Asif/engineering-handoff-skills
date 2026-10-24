@@ -1,11 +1,14 @@
 # Engineering Handoff Skills
 
 Pass an engineering artifact to the next person with evidence tied to the bytes they
-actually receive. This repository combines three portable skills with an original,
+actually receive. This repository combines four portable skills with an original,
 dependency-free offline tool for artifact snapshots, check bindings and retention review.
 Version 0.2 adds start/finish observations: record selected inputs before an authorized
 check, compare final bytes, and receive a manifest with the exact reviewed evidence.
 The helper never executes that check.
+Version 0.3 adds required-check set review: compare separate saved manifests against
+explicit subject/check requirements, detect cross-record conflicts and keep missing
+or blocked work visible without merging evidence.
 
 A saved “tests passed” log is easy to carry forward after the source changes. This tool
 preserves the source hashes recorded at observation time, compares them with the handoff,
@@ -26,6 +29,7 @@ git clone https://github.com/Huzaifa-Asif/engineering-handoff-skills.git
 cd engineering-handoff-skills
 node examples/run.mjs
 node examples/observe.mjs
+node examples/review-set.mjs
 ```
 
 The example captures synthetic files, verifies consistency, changes a deliverable and
@@ -56,6 +60,32 @@ Capture output includes paths and hashes. Verification output is redacted by con
   "remoteState": "not-verified"
 }
 ```
+
+## Require several checks across saved manifests
+
+For a handoff needing both unit tests and syntax checks, select the exact manifests and
+required IDs rather than accepting whichever passed log happens to be present:
+
+```json
+{
+  "schemaVersion": 1,
+  "manifestFiles": ["unit-tests.json", "syntax.json"],
+  "requirements": [{ "subjectId": "source", "checkIds": ["unit-tests", "syntax"] }]
+}
+```
+
+```sh
+node bin/handoff.mjs review-set <root> review.json
+```
+
+Exit 0 means local consistency and passed declarations for all listed pairs; 2 means
+attention; 1 is an input/operational error. The redacted report flags missing coverage,
+conflicting identities/snapshots/checks and ordinary stale/expired/blocked records.
+It never merges manifests, recaptures evidence or proves execution. Use
+[review-required-checks](skills/review-required-checks/SKILL.md) for the agent workflow and
+[the full contract/API](docs/review-set.md) for schemas, limits and troubleshooting.
+`node examples/review-set.mjs` runs actual known synthetic unit/syntax commands outside
+the helper and demonstrates complete coverage, missing checks and stale bytes.
 
 ## Record a new check without copying hashes
 
@@ -92,6 +122,7 @@ environment changes or unselected dependencies. A status is still self-reported.
 | [prepare-artifact-handoff](skills/prepare-artifact-handoff/SKILL.md) | Preparing selected files, actual check evidence and a reviewable handoff |
 | [verify-artifact-handoff](skills/verify-artifact-handoff/SKILL.md) | Receiving/resuming a handoff or checking whether evidence became stale |
 | [record-check-observation](skills/record-check-observation/SKILL.md) | Recording a new check with before/after subject hashing and reviewed evidence |
+| [review-required-checks](skills/review-required-checks/SKILL.md) | Reviewing required subject/check coverage and conflicts across separate manifests |
 
 The root `plugin.json` uses Agent Plugins schema 1.0.0 with fixed `skills/` discovery.
 The skills also use the Agent Skills `SKILL.md` format. Keep the **whole checkout** when
@@ -99,7 +130,7 @@ using any skill: they rely on the shared `bin/`, `src/` and `docs/` files. Do no
 single skill folder into a global skills directory and expect the shared tool to follow.
 
 For a client that accepts a local portable plugin, select the repository root through
-that client's plugin installation UI and verify the three skill names appear. Client
+that client's plugin installation UI and verify the four skill names appear. Client
 support and installation paths vary; see the [current official packaging guide](https://developers.openai.com/plugins/build/plugins).
 You can also explicitly provide the SKILL.md path to an agent with local file tools.
 No host-client installation, marketplace acceptance or directory listing is claimed.
@@ -168,6 +199,9 @@ disable safeguards. For `invalid-binding`, supply hashes from the actual check o
 For stale evidence, preserve the old result and rerun relevant checks only when authorized.
 For expiry, review retention with the owner. For `size-limit`, choose a smaller handoff.
 For `future-capture`, check the clock; do not backdate a current review to hide expiry.
+For `required-check-missing`, preserve the incomplete set and obtain the actual required
+observation only when authorized. For conflicts, review the originals instead of merging
+JSON or changing IDs to suppress a finding. Use distinct IDs for different observations.
 Do not paste private input to an issue: use a minimal synthetic reproduction.
 
 For `subject-changed-during-observation`, preserve the original session/result and rerun

@@ -1,5 +1,11 @@
 # Evaluation approach
 
+`node evaluations/review-set.mjs` adds eight required-set workflows: complete coverage,
+missing check, wrong subject, blocked status, conflict, expiry, inert injected log and
+missing control document. `node examples/review-set.mjs` executes actual known synthetic
+unit and syntax commands outside the helper, recording exact command/time/exit and
+demonstrating complete requirements, missing evidence and later source drift.
+
 `node evaluations/observations.mjs` additionally replays seven observation workflows:
 unchanged handoff, interval drift, blocked/not-run work, exact expiry, untrusted log
 instructions and changed evidence after finish. `node examples/observe.mjs` separately
