@@ -38,7 +38,7 @@
     1672,
     941
   ],
-  "sha256": "69b628bc1def4f668ee8706e69dbc638c7c93ecfdaf1985fb18a458b758e894d",
+  "sha256": "1ef9c359d8bc965fcb86aaf62f4ab654d003e375d075f6a2366855f74ec61cd9",
   "qa": {
     "fullSizeInspected": true,
     "halfSizeThumbnailInspected": true,
@@ -56,6 +56,6 @@
     "editorialPublication": "not performed",
     "referenceContactSheetInspected": true
   },
-  "release": "0.3.0",
-  "verifiedOn": "2026-10-25 MYT"
+  "release": "0.4.0",
+  "verifiedOn": "2026-10-26 MYT"
 }

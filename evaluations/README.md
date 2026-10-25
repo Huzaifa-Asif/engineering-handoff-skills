@@ -1,5 +1,11 @@
 # Evaluation approach
 
+`node evaluations/transfers.mjs` adds eight recipient workflows: relocated unchanged bytes,
+changed source/log, blocked status, exact expiry, omitted evidence, inert injected text
+and unknown ID. `node examples/transfer.mjs` actually runs a known synthetic sender check,
+records exact command/runtime/time/exit, copies selected fixtures outside the verifier,
+and verifies placements, drift and missing evidence. It claims no recipient execution.
+
 `node evaluations/review-set.mjs` adds eight required-set workflows: complete coverage,
 missing check, wrong subject, blocked status, conflict, expiry, inert injected log and
 missing control document. `node examples/review-set.mjs` executes actual known synthetic

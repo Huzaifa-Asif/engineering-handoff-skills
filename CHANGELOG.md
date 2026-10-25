@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.4.0 — 2026-10-26 MYT
+
+- Add verify-transfer CLI/API for exhaustive explicit recipient placements under a
+  changed local layout without rewriting/recapturing original evidence.
+- Preserve original hashes/bindings/statuses/time/expiry and report artifact indices;
+  refuse incomplete/ambiguous mappings and keep all existing selected-file bounds.
+- Extend existing verify skill with recipient workflow and path-dependent behavior
+  limitations. Add actual synthetic sender-test example, regressions and workflow evals.
+- Retain four portable skills, prior v1 formats/APIs/commands, MIT and zero dependencies.
+- Charge the default verification budget before ingestion, including failed/racing reads.
+
 ## 0.3.0 — 2026-10-25 MYT
 
 - Add bounded review-set command/API and review-required-checks skill for explicit

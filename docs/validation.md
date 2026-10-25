@@ -1,5 +1,44 @@
 # Validation record
 
+## 0.4.0 recipient placement verification — 2026-10-26 MYT
+
+Local macOS arm64 / Node.js v24.18.1 checks passed:
+
+- 97 tests, 31 deterministic workflows and four runnable examples, custom lint,
+  distribution build, built-package check and `git diff --check`. The new example runs
+  an actual fixed synthetic sender test, records exact command/time/runtime/exit, copies
+  selected fixtures outside the helper and verifies complete placements/drift/omissions.
+  It does not claim recipient execution success or rewrite the original manifest.
+- Both validators accepted the four source and packaged skills (16 checks), using the
+  existing isolated bundled validator/PyYAML 6.0.3 and skills-ref 0.1.1. No installs or
+  system-Python changes. The receiving skill was extended without adding a fifth skill.
+- Source line/function coverage 100%; new transfer module branches 100%; core branches
+  99.01%; aggregate branches 99.54%. Plain JS has no separate TypeScript checker.
+- Zero runtime/development/optional project dependencies. Production import review found
+  only local modules and fs/path/crypto built-ins, no network/subprocess/dynamic evaluation.
+  No third-party vulnerability scanner result is claimed.
+
+Independent review initially returned NO-GO for failed/racing reads bypassing the default
+aggregate charge. The default verifier now creates a fresh charged budget, preserving
+explicit shared budgets. Instrumented regression/re-review confirmed ordinary verification,
+recipient verification and a second fresh recipient call each stopped at 64 MiB, charged
+four failed/racing reads, and refused the fifth ingestion. Original failure evidence is
+retained privately; final independent disposition is GO with no remaining reviewed blocker.
+
+Representative independent receiving tasks used an actual synthetic sender check and
+intentional renamed paths. Original bytes matched while a separately executed known
+synthetic recipient test failed on its old import path, confirming the skill's distinction
+between preserved observation and recipient behavior. Drift, injected changed evidence,
+blocked status, exact expiry without deletion, incomplete mappings, unsafe paths,
+malformed controls and symlinks behaved as documented, with no reflected canary values
+or execution of log instructions. Final reviewed code hashes are in the release evidence.
+
+Exact final commit, branch/tag CI, extracted-archive checks and downloaded public release
+asset hashes are recorded separately in the release report. Staged/source/package/archive
+gates exclude private editorial drafts before publication. No model-level skill lift,
+client installation, directory acceptance, remote-state inference or adoption is claimed.
+Requested serving model/reasoning selection remains unexposed and unverified.
+
 ## 0.3.0 required-check set review — 2026-10-25 MYT
 
 Local macOS arm64 / Node.js v24.18.1 source and built-package checks passed:

@@ -1,5 +1,8 @@
 # Handoff contract v1
 
+Version 0.4 adds [recipient-placement verification](transfers.md). Only an ephemeral
+verification view substitutes explicit recipient paths; saved evidence is never changed.
+
 Version 0.3 adds [required-check set review](review-set.md) over separate v1 manifests.
 It does not merge or recapture records; all original capture timestamps remain intact.
 Optional shared read-budget arguments are described in that API reference.
@@ -27,6 +30,9 @@ an adversarially changing filesystem; a snapshot or sandbox belongs outside this
 
 Each file is limited to 16 MiB, with a 64 MiB aggregate budget. Reads are bounded even
 if a file grows, and descriptor size/mtime/ctime are checked after reading. On verify,
+the default budget charges the accepted descriptor size before reading, including a
+read that later fails a race check. At most one extra growth-detection sentinel byte
+per artifact may be inspected. This applies to ordinary and recipient verification.
 each read receives the remaining aggregate allowance; empty files remain valid at the
 exact budget boundary, while nonempty overflow is refused before content ingestion.
 Each manifest artifact additionally contains `sizeBytes` (nonnegative safe integer)

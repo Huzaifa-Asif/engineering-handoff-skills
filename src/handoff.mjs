@@ -138,7 +138,8 @@ export function capture(root, plan, at = new Date().toISOString().replace(/\.\d{
   return result;
 }
 
-export function verify(root, manifest, at = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z'), budget) {
+export function verify(root, manifest, at = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z'),
+  budget = { remaining: LIMITS.totalBytes }) {
   const byId = validate(manifest, true); const now = timestamp(at);
   requireThat(timestamp(manifest.capturedAt) <= now, 'future-capture');
   let total = 0; const issues = []; const invalid = new Set();

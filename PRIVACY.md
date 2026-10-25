@@ -1,5 +1,10 @@
 # Privacy and retention
 
+Recipient placement requests contain original artifact IDs and selected destination paths.
+Keep them private alongside the original manifest. `verify-transfer` emits only fixed
+codes/counts/original-order indices and does not copy/extract files, discover alternatives,
+change the manifest or renew expiry. It does not authenticate the mapping or redact contents.
+
 Required-check set review reads explicitly named manifests in one selected root. It
 does not discover records, merge files or recapture evidence. Its requirement list and
 original manifests contain private IDs/paths; only the fixed-code review report omits

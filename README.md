@@ -3,6 +3,9 @@
 Pass an engineering artifact to the next person with evidence tied to the bytes they
 actually receive. This repository combines four portable skills with an original,
 dependency-free offline tool for artifact snapshots, check bindings and retention review.
+Version 0.4 adds explicit recipient-placement verification: compare every transferred
+artifact against the untouched sender manifest after an intentional path/layout change.
+Original digests, bindings, statuses, capture time and expiry are preserved.
 Version 0.2 adds start/finish observations: record selected inputs before an authorized
 check, compare final bytes, and receive a manifest with the exact reviewed evidence.
 The helper never executes that check.
@@ -30,6 +33,7 @@ cd engineering-handoff-skills
 node examples/run.mjs
 node examples/observe.mjs
 node examples/review-set.mjs
+node examples/transfer.mjs
 ```
 
 The example captures synthetic files, verifies consistency, changes a deliverable and
@@ -60,6 +64,35 @@ Capture output includes paths and hashes. Verification output is redacted by con
   "remoteState": "not-verified"
 }
 ```
+
+## Receive artifacts under different paths
+
+Keep the original saved manifest. State each original artifact ID and actual recipient
+path, including every evidence file, in a new request:
+
+```json
+{
+  "schemaVersion": 1,
+  "manifestFile": "original-manifest.json",
+  "placements": [
+    { "artifactId": "source", "path": "payload/code.mjs" },
+    { "artifactId": "tests", "path": "payload/check.mjs" },
+    { "artifactId": "test-log", "path": "evidence/result.txt" }
+  ]
+}
+```
+
+```sh
+node bin/handoff.mjs verify-transfer <recipient-root> transfer.json
+```
+
+Placements must cover the entire artifact set exactly once. Nothing is copied, extracted,
+rewritten or recaptured. The fixed report uses original manifest indices and
+`local-placement-consistency-only`; it omits private paths/IDs/content. Exit codes remain
+0 consistent, 2 attention, 1 invalid input/operational error. Matching relocated bytes
+does not prove imports/commands still work in the new layout or that a recipient check ran.
+See [recipient usage/API/limits](docs/transfers.md) and run `node examples/transfer.mjs`.
+The existing verify skill includes this receiving mode; no additional skill is needed.
 
 ## Require several checks across saved manifests
 
@@ -202,6 +235,9 @@ For `future-capture`, check the clock; do not backdate a current review to hide 
 For `required-check-missing`, preserve the incomplete set and obtain the actual required
 observation only when authorized. For conflicts, review the originals instead of merging
 JSON or changing IDs to suppress a finding. Use distinct IDs for different observations.
+For `incomplete-placement`, establish the actual destination for every original artifact;
+do not omit evidence or rewrite digests. For a changed recipient file, preserve the old
+observation and reassess whether the layout/environment requires an authorized new check.
 Do not paste private input to an issue: use a minimal synthetic reproduction.
 
 For `subject-changed-during-observation`, preserve the original session/result and rerun
