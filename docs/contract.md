@@ -1,5 +1,8 @@
 # Handoff contract v1
 
+Version 0.5 composes set requirements with [recipient placements](review-set.md#recipient-placements)
+without changing original records, indices, conflict comparisons or aggregate read limits.
+
 Version 0.4 adds [recipient-placement verification](transfers.md). Only an ephemeral
 verification view substitutes explicit recipient paths; saved evidence is never changed.
 
@@ -33,7 +36,7 @@ if a file grows, and descriptor size/mtime/ctime are checked after reading. On v
 the default budget charges the accepted descriptor size before reading, including a
 read that later fails a race check. At most one extra growth-detection sentinel byte
 per artifact may be inspected. This applies to ordinary and recipient verification.
-each read receives the remaining aggregate allowance; empty files remain valid at the
+Each read receives the remaining aggregate allowance; empty files remain valid at the
 exact budget boundary, while nonempty overflow is refused before content ingestion.
 Each manifest artifact additionally contains `sizeBytes` (nonnegative safe integer)
 and `sha256` (64 lowercase hex characters). Capture computes them from selected bytes.

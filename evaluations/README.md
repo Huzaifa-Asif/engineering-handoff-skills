@@ -1,5 +1,11 @@
 # Evaluation approach
 
+`node evaluations/recipient-sets.mjs` adds eight mapped-set workflows: complete coverage,
+missing required check, original-record conflict, omitted evidence mapping, changed log,
+blocked state, expiry without deletion and inert injected content. The existing set-review
+example now also copies its known synthetic sender observations to an intentionally
+different recipient layout, checks mapped coverage/gaps/drift and claims no recipient run.
+
 `node evaluations/transfers.mjs` adds eight recipient workflows: relocated unchanged bytes,
 changed source/log, blocked status, exact expiry, omitted evidence, inert injected text
 and unknown ID. `node examples/transfer.mjs` actually runs a known synthetic sender check,

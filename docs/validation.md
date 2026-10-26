@@ -1,5 +1,38 @@
 # Validation record
 
+## 0.5.0 recipient-set composition — 2026-10-27 MYT
+
+Local macOS arm64 / Node.js v24.18.1 validation passed:
+
+- 108 tests, 39 deterministic workflows, four runnable examples, custom lint, build,
+  built-package check and `git diff --check`. The existing set example now also copies
+  known synthetic sender observations and checks explicit recipient coverage/gaps/drift.
+  Actual sender command/runtime/time/exit are recorded; no recipient execution is claimed.
+- Both bundled and reference validators accepted all four source/packaged skills
+  (16 checks), reusing isolated PyYAML 6.0.3 / skills-ref 0.1.1 tools. No installs or
+  system-Python changes. Existing skills were expanded; no new skill/command/repo added.
+- All source lines/functions 100%; changed review-set/transfer branches 100%; core
+  branches 99.01%; aggregate branches 99.57%. Plain JS has no separate type checker.
+- Zero project runtime/development/optional dependencies. Production imports use only
+  local modules and fs/path/crypto; no network/subprocess/dynamic evaluation. No
+  third-party vulnerability scanner result is claimed.
+
+Independent review returned GO with no blocker. Its actual synthetic sender unit and
+syntax checks passed; a mapped recipient union was locally consistent with original
+manifests unchanged. Original path/check conflicts, missing requirements, blocked states,
+changed injected evidence, exact expiry without deletion and mapping/control errors stayed
+honest. Fixed reports/errors did not reflect canaries or execute artifact instructions.
+Two fresh instrumented calls each charged exactly 64 MiB through four failed/racing
+mapped reads and refused the fifth before ingestion. Incomplete union and invalid later
+control probes opened zero artifacts. Existing single-transfer/unmapped compatibility
+tests also passed, including original collision/assurance behavior when placements is absent.
+
+Review hashes, boundary/forward artifacts and final exact commit/CI/archive evidence
+are recorded in the release report. Staged paths/source/build/archive gates exclude private
+editorial drafts before first push. No model-level skill lift, directory acceptance,
+client installation, remote execution authentication or adoption is established. Actual
+serving model/reasoning selection remains unexposed/unverified. Earlier records remain below.
+
 ## 0.4.0 recipient placement verification — 2026-10-26 MYT
 
 Local macOS arm64 / Node.js v24.18.1 checks passed:

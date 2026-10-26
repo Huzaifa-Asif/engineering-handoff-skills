@@ -17,6 +17,13 @@ do not infer a mandatory checklist or silently drop a missing/blocked check. If 
 identity is unknown, inspect only the selected metadata or clarify that identity before
 claiming coverage. Do not search home/configuration directories or unrelated outputs.
 
+For intentionally relocated recipient files, add an exhaustive `placements` list covering
+the union of original artifact IDs once, including all evidence. Read the
+[recipient-set mode](../../docs/review-set.md) and establish actual
+destinations without guessing. Mapping changes only read targets; original record
+conflicts and required-pair gaps remain findings. A consistent mapped set preserves old
+observations, not execution success in a new layout. Keep maps and original records private.
+
 Read [the review-set contract](../../docs/review-set.md) for the request schema, bounds
 and code/index mapping. Put the request in a new explicitly chosen file inside the root.
 Use a file tool that refuses overwrite. Run:

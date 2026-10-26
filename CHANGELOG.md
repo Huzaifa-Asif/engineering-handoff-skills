@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.5.0 — 2026-10-27 MYT
+
+- Extend review-set with optional exhaustive recipient placements across the artifact
+  union, reusing single-transfer schema validation and preserving original conflicts.
+- Retain required-pair gaps, non-passed/expired/stale evidence, original indices and one
+  charged aggregate budget across repeated mapped reads; no merged/recaptured records.
+- Expand existing required-check skill and real sender-check example with receiving mode;
+  add regressions, representative workflows and current API/research/privacy guidance.
+- Preserve four skills, existing commands, v1 formats, release history, MIT and zero dependencies.
+
 ## 0.4.0 — 2026-10-26 MYT
 
 - Add verify-transfer CLI/API for exhaustive explicit recipient placements under a

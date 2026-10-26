@@ -35,7 +35,23 @@ try {
   assert.equal(reviewSet(root, request).outcome, 'consistent');
   const missing = { ...request, manifestFiles: ['unit-tests.json'] };
   assert(reviewSet(root, missing).issues.some(i => i.code === 'required-check-missing'));
+  const recipient = path.join(root, 'recipient');
+  for (const dir of [recipient, path.join(recipient, 'payload'), path.join(recipient, 'evidence')]) fs.mkdirSync(dir);
+  for (const [from, to] of [['calculator.mjs', 'payload/code.mjs'], ['calculator.test.mjs', 'payload/check.mjs'],
+    ['unit-tests.txt', 'evidence/unit.txt'], ['syntax.txt', 'evidence/syntax.txt'],
+    ['unit-tests.json', 'unit-tests.json'], ['syntax.json', 'syntax.json']])
+    fs.copyFileSync(path.join(root, from), path.join(recipient, to), fs.constants.COPYFILE_EXCL);
+  const mapped = { ...request, placements: [
+    { artifactId: 'source', path: 'payload/code.mjs' }, { artifactId: 'tests', path: 'payload/check.mjs' },
+    { artifactId: 'unit-tests-log', path: 'evidence/unit.txt' }, { artifactId: 'syntax-log', path: 'evidence/syntax.txt' }] };
+  assert.equal(reviewSet(recipient, mapped).outcome, 'consistent');
+  const missingRecipient = { ...mapped, manifestFiles: ['unit-tests.json'],
+    placements: mapped.placements.filter(p => p.artifactId !== 'syntax-log') };
+  assert(reviewSet(recipient, missingRecipient).issues.some(i => i.code === 'required-check-missing'));
+  fs.appendFileSync(path.join(recipient, 'payload/code.mjs'), '// changed after receipt\n');
+  assert(reviewSet(recipient, mapped).issues.some(i => i.code === 'stale-evidence'));
+  // Renamed test imports still target calculator.mjs: no recipient test pass is claimed.
   fs.appendFileSync(path.join(root, 'calculator.mjs'), '// changed after checks\n');
   assert(reviewSet(root, request).issues.some(i => i.code === 'stale-evidence'));
-  console.log('Set review example passed: actual unit/syntax checks, required coverage, missing check and stale bytes.');
+  console.log('Set review example passed: actual sender unit/syntax checks, original/recipient requirements, missing check and stale bytes. Recipient execution not performed.');
 } finally { fs.rmSync(root, { recursive: true, force: true }); }

@@ -1,14 +1,16 @@
 // Copyright (c) 2026 Huzaifa Asif. MIT licensed.
 import { validateManifest, verify, readSelected, parseDocument, timestamp,
   safeRelative, HandoffError, LIMITS } from './handoff.mjs';
+import { placementMap } from './transfer.mjs';
 
 export const SET_LIMITS = Object.freeze({ manifests: 16, controlBytes: 1024 * 1024,
   artifactEntries: 100, checkEntries: 100, requiredPairs: 100 });
 const id = value => typeof value === 'string' && /^[a-z][a-z0-9-]{0,63}$/.test(value);
 const ensure = (condition, code) => { if (!condition) throw new HandoffError(code); };
-function shape(value, keys) {
+function shape(value, keys, optional = []) {
   ensure(value !== null && typeof value === 'object' && !Array.isArray(value) &&
-    Object.keys(value).length === keys.length && keys.every(k => Object.hasOwn(value, k)), 'invalid-review-set');
+    keys.every(k => Object.hasOwn(value, k)) &&
+    Object.keys(value).every(k => keys.includes(k) || optional.includes(k)), 'invalid-review-set');
 }
 const artifactKey = a => JSON.stringify([a.path, a.role, a.sha256, a.sizeBytes, a.expiresAt ?? null]);
 const checkKey = c => JSON.stringify([c.status, c.evidence ?? null,
@@ -17,13 +19,14 @@ const checkKey = c => JSON.stringify([c.status, c.evidence ?? null,
 // Review separate records as records: never manufacture a merged capture timestamp,
 // replace a recorded binding, upgrade status or execute artifact contents.
 export function reviewSet(root, request, at = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z')) {
-  shape(request, ['schemaVersion', 'manifestFiles', 'requirements']);
+  shape(request, ['schemaVersion', 'manifestFiles', 'requirements'], ['placements']);
   ensure(request.schemaVersion === 1, 'unsupported-version');
   const now = timestamp(at);
   ensure(Array.isArray(request.manifestFiles) && request.manifestFiles.length > 0 &&
     request.manifestFiles.length <= SET_LIMITS.manifests &&
     new Set(request.manifestFiles).size === request.manifestFiles.length, 'invalid-review-set');
   request.manifestFiles.forEach(safeRelative);
+  const selected = Object.hasOwn(request, 'placements') ? placementMap(request.placements, request.manifestFiles) : null;
   ensure(Array.isArray(request.requirements) && request.requirements.length > 0 &&
     request.requirements.length <= SET_LIMITS.requiredPairs, 'invalid-review-set');
   const requiredSubjects = new Set(); let pairs = 0;
@@ -66,11 +69,16 @@ export function reviewSet(root, request, at = new Date().toISOString().replace(/
       if (!checks.has(c.id)) checks.set(c.id, c);
     });
   });
-  // Selected manifests cannot also be artifacts in another selected record.
-  ensure(!manifests.some(m => m.artifacts.some(a => request.manifestFiles.includes(a.path))), 'review-set-path-collision');
+  // Reconcile original metadata before any in-memory placement view. Mapping cannot
+  // repair a source snapshot, identity or status conflict in the original records.
+  if (selected) ensure(selected.size === artifacts.size && [...selected.keys()].every(id => artifacts.has(id)), 'incomplete-placement');
+  // Only read-target paths collide with recipient controls. Original sender paths
+  // are metadata in mapped mode; unmapped mode retains its existing collision rule.
+  else ensure(!manifests.some(m => m.artifacts.some(a => request.manifestFiles.includes(a.path))), 'review-set-path-collision');
   const budget = { remaining: LIMITS.totalBytes };
   manifests.forEach((m, manifestIndex) => {
-    for (const issue of verify(root, m, at, budget).issues) issues.push({ ...issue, manifestIndex });
+    const view = selected ? { ...m, artifacts: m.artifacts.map(a => ({ ...a, path: selected.get(a.id) })) } : m;
+    for (const issue of verify(root, view, at, budget).issues) issues.push({ ...issue, manifestIndex });
   });
   request.requirements.forEach((r, index) => {
     if (artifacts.get(r.subjectId)?.role !== 'deliverable')
@@ -84,7 +92,8 @@ export function reviewSet(root, request, at = new Date().toISOString().replace(/
   });
   const result = { schemaVersion: 1, outcome: issues.length ? 'attention' : 'consistent',
     manifestCount: manifests.length, artifactEntryCount: artifactEntries, checkEntryCount: checkEntries,
-    requiredPairCount: pairs, issues, assurance: 'local-set-consistency-only',
+    requiredPairCount: pairs, issues,
+    assurance: selected ? 'local-placement-set-consistency-only' : 'local-set-consistency-only',
     testExecution: 'not-performed', remoteState: 'not-verified' };
   ensure(Buffer.byteLength(JSON.stringify(result, null, 2) + '\n') <= LIMITS.jsonBytes, 'size-limit');
   return result;

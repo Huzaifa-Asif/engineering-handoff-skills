@@ -24,6 +24,8 @@ Its report indices refer to original manifest order, irrespective of mapping ord
 Matching relocated bytes does not show that path-dependent code works in the new layout;
 the recorded checks describe the original observation. Rerun only when authorized and
 needed to assess the recipient environment. Keep the mapping and manifest private.
+For several relocated manifests with explicit required checks, use
+[review-required-checks](../review-required-checks/SKILL.md) with the same placement policy.
 
 The default uses the current UTC clock. Use `--at YYYY-MM-DDTHH:MM:SSZ` only for an
 explicit historical or reproducibility question; disclose that time in the answer.

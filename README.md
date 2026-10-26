@@ -2,16 +2,12 @@
 
 Pass an engineering artifact to the next person with evidence tied to the bytes they
 actually receive. This repository combines four portable skills with an original,
-dependency-free offline tool for artifact snapshots, check bindings and retention review.
-Version 0.4 adds explicit recipient-placement verification: compare every transferred
-artifact against the untouched sender manifest after an intentional path/layout change.
-Original digests, bindings, statuses, capture time and expiry are preserved.
-Version 0.2 adds start/finish observations: record selected inputs before an authorized
-check, compare final bytes, and receive a manifest with the exact reviewed evidence.
-The helper never executes that check.
-Version 0.3 adds required-check set review: compare separate saved manifests against
-explicit subject/check requirements, detect cross-record conflicts and keep missing
-or blocked work visible without merging evidence.
+dependency-free offline tool for snapshots, before/after check observations, required
+coverage, recipient placements and retention review. Record selected inputs before an
+authorized check, preserve its exact evidence, then review one manifest or a required
+set at the original or intentionally relocated paths. Original conflicts, hashes,
+bindings, statuses, capture times and expiry survive without merging or recapture.
+The helper never executes checks.
 
 A saved “tests passed” log is easy to carry forward after the source changes. This tool
 preserves the source hashes recorded at observation time, compares them with the handoff,
@@ -119,6 +115,13 @@ It never merges manifests, recaptures evidence or proves execution. Use
 [the full contract/API](docs/review-set.md) for schemas, limits and troubleshooting.
 `node examples/review-set.mjs` runs actual known synthetic unit/syntax commands outside
 the helper and demonstrates complete coverage, missing checks and stale bytes.
+
+For several intentionally relocated observations, add a `placements` array to the same
+`review-set` request, covering the union of selected artifact IDs once (including evidence).
+The [recipient-set guide](docs/review-set.md#recipient-placements) explains strict coverage,
+control-file collisions, original conflict handling and unchanged read limits. The report
+uses `local-placement-set-consistency-only`. Mapping does not repair old disagreements or
+prove tests work in the new layout. The example also demonstrates this receiving mode.
 
 ## Record a new check without copying hashes
 

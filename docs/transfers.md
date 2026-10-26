@@ -91,6 +91,11 @@ recipient report preserves the original observation; it is **not** a passing che
 the new environment. Reassess path-sensitive behavior separately when authorized.
 
 No BagIt parsing/conversion or checksum-tool interoperability is claimed. For unchanged
-layouts use ordinary verification. For multi-manifest requirements use `review-set` in
-the original layout; transfer verification currently accepts one manifest and does not
-add mapped-set composition. No remote commit/CI/release/directory status is inferred.
+layouts use ordinary verification. Single transfer accepts one manifest; version 0.5
+supports several manifests with explicit requirements through
+[review-set recipient placements](review-set.md#recipient-placements). No remote
+commit/CI/release/directory status is inferred.
+
+The schema-only `placementMap(placements, controlFiles)` helper is shared internally by
+both workflows. It validates selected destination shapes/uniqueness/control collisions
+without reading files; the caller then checks exact coverage against validated artifacts.

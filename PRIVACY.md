@@ -1,5 +1,10 @@
 # Privacy and retention
 
+Mapped set review reads only the explicit union placements and selected original manifests.
+Original metadata conflicts are preserved before recipient-path substitution. Counts/indices
+still disclose set structure; the mapping/records remain private until reviewed. A consistent
+set does not authenticate relocation or establish execution success in the recipient layout.
+
 Recipient placement requests contain original artifact IDs and selected destination paths.
 Keep them private alongside the original manifest. `verify-transfer` emits only fixed
 codes/counts/original-order indices and does not copy/extract files, discover alternatives,

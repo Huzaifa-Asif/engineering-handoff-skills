@@ -23,7 +23,8 @@ node bin/handoff.mjs review-set <root> <request-relative-path> [--at <UTC>]
 node examples/review-set.mjs
 ```
 
-The request supports exactly the fields shown. `manifestFiles` has 1–16 distinct safe
+The request requires the fields shown and optionally accepts `placements` as described
+below. No other fields are accepted. `manifestFiles` has 1–16 distinct safe
 relative paths inside the selected root. `requirements` has 1–100 entries with distinct
 subject IDs; each contains exactly `subjectId` and a nonempty distinct `checkIds` array.
 There may be at most 100 required subject/check pairs in total. IDs follow the existing
@@ -33,8 +34,8 @@ The API is `reviewSet(root, request, at?)` from `src/review-set.mjs`, accepting 
 parsed data, not hostile JavaScript getters/proxies. `SET_LIMITS` exposes set bounds.
 The CLI also bounds its request to 256 KiB. Every selected manifest is schema-validated
 before artifact ingestion, including future-time checks. Unknown fields, malformed JSON,
-unsafe/secret-name paths, symlinks and missing control files are errors. Manifest files
-cannot also be selected artifacts. Filesystem/API errors should be handled without
+unsafe/secret-name paths, symlinks and missing control files are errors. A read-target
+artifact path cannot be a selected manifest file. Filesystem/API errors should be handled without
 sharing raw private paths; CLI errors contain fixed codes only.
 
 ## Reconciliation and requirements
@@ -46,6 +47,63 @@ subject ordering and JSON property order do not matter. Use distinct check IDs f
 different observations. Compatible repeated records are accepted; copies cannot turn
 one check into another required identity. These are exact consistency comparisons,
 not proof of a common author, execution or trustworthy identity assignment.
+
+## Recipient placements
+
+Version 0.5 composes required-check review with explicit recipient placements using the
+same API and CLI. Keep all original manifests unchanged. Add one placement for each ID
+in the **union** of their artifact sets, not one per occurrence:
+
+```json
+{
+  "schemaVersion": 1,
+  "manifestFiles": ["unit.json", "syntax.json"],
+  "requirements": [{ "subjectId": "source", "checkIds": ["unit", "syntax"] }],
+  "placements": [
+    { "artifactId": "source", "path": "payload/code.mjs" },
+    { "artifactId": "unit-log", "path": "evidence/unit.txt" },
+    { "artifactId": "syntax-log", "path": "evidence/syntax.txt" }
+  ]
+}
+```
+
+Use actual IDs from the selected manifests; the shape above illustrates two source-only
+observations. If a record also selects a test/config file, that ID needs its own placement.
+One shared source ID may occur in several compatible manifests but is mapped once.
+Every evidence artifact also needs a destination. Missing, unknown, extra or duplicate
+IDs and duplicate destination path strings are errors. Placements cannot override
+digests, statuses, roles, expiry or bindings. A destination cannot be **any** selected
+control manifest. The single-transfer schema validator is reused, with its fixed
+`invalid-placement`, `invalid-transfer`, `incomplete-placement` and
+`transfer-path-collision` errors. Omit the field entirely for ordinary original-layout
+review; an empty/null placements field does not mean unmapped mode.
+
+Reconciliation uses original metadata before substitution, so original identity/path,
+snapshot/retention or check conflicts still require attention. Mapping cannot repair
+them, hide a missing requirement or promote a blocked status. Only then does each
+verification use an ephemeral recipient-path view with original artifact order and all
+other fields unchanged. No merged/replacement manifest or capture time is emitted.
+
+In mapped mode sender path strings are metadata, not read targets. They may happen to
+equal a recipient control filename if the explicit destination is different; the mapped
+destination guard prevents control ingestion. Unmapped mode retains its original
+control/artifact collision rule. All original path metadata is still schema-validated.
+Physical aliases through case folding/hardlinks are not deduplicated/authenticated.
+
+Mapped reports use assurance `local-placement-set-consistency-only`; all other report
+fields, exit states and original manifest/artifact/check/requirement indices are unchanged.
+The same aggregate read budget covers repeated mapped reads, including failed/racing
+ones. Each call starts fresh. No copying, extraction, discovery, credential discovery or
+command execution is added. Select intentional bounded files in one stable trusted root.
+The map and records remain private until reviewed; neither their content nor file
+content is redacted by this tool.
+
+Matching relocated bytes preserves old observations. It cannot show path-dependent
+imports/tests work in the recipient layout or that a new check ran. Rerun relevant
+checks only when authorized and needed. `node examples/review-set.mjs` demonstrates
+actual known sender unit/syntax checks and both original-layout and recipient review.
+
+## Preserved verification and coverage
 
 Every original manifest also undergoes ordinary local verification: changed/unavailable
 bytes, expiry, stale bindings, non-passed status and no-recorded-check remain attention.
@@ -62,7 +120,7 @@ or execution inference is emitted.
 
 The report contains `schemaVersion`, `outcome` (`consistent` or `attention`),
 `manifestCount`, `artifactEntryCount`, `checkEntryCount`, `requiredPairCount`, `issues`,
-and fixed assurance fields: `local-set-consistency-only`, `testExecution: not-performed`,
+and fixed assurance fields: `local-set-consistency-only` (or mapped assurance above), `testExecution: not-performed`,
 `remoteState: not-verified`. It contains no input-derived strings, paths, IDs, digests,
 contents or raw errors. Counts/indices still disclose set structure; they are not anonymous.
 
