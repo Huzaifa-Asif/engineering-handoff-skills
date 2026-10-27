@@ -1,5 +1,8 @@
 # Handoff contract v1
 
+Version 0.6 adds a separate [saved CI observation contract](ci-observations.md). It does
+not change artifact manifests or turn local consistency into remote verification/approval.
+
 Version 0.5 composes set requirements with [recipient placements](review-set.md#recipient-placements)
 without changing original records, indices, conflict comparisons or aggregate read limits.
 

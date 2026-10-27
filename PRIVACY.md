@@ -1,5 +1,10 @@
 # Privacy and retention
 
+CI observation review reads two explicit minimal metadata files, not raw job logs or
+credentials. Its fixed reports omit input values/names/paths but reveal counts/indices.
+Freshness expiry flags attention without renewal or deletion. Selected metadata remains
+private until reviewed; its authenticity is not established by local consistency.
+
 Mapped set review reads only the explicit union placements and selected original manifests.
 Original metadata conflicts are preserved before recipient-path substitution. Counts/indices
 still disclose set structure; the mapping/records remain private until reviewed. A consistent

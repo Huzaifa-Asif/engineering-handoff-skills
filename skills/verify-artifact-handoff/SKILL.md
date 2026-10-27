@@ -49,3 +49,13 @@ commits, pushes, exact-commit CI, releases and publication. Saved evidence is a 
 review its meaning if the user needs assurance. The tool does not verify signatures,
 remote state, authorship or whether a claimed command ran. A malicious author can forge
 the manifest and log together. Do not present this workflow as a security sandbox.
+
+For a handoff that includes branch/tag CI claims, [saved CI observation review](../../docs/ci-observations.md)
+checks explicit repository/workflow/commit/refs, required jobs, attempt consistency,
+complete lists and freshness. Collect only authorized minimal metadata from exact live
+runs outside the helper; never include credentials/raw logs. Its consistent outcome is
+local claim consistency, not remote authenticity or release approval. Pending, stale,
+mixed or incomplete observations stay unfinished. Do not treat a failed tool call as a
+passing check: keep any dependent action in the same conditional control flow, stopping
+on nonzero exit, exceptions or unexpected outcomes. Independently verify live provenance,
+tag identity, artifacts and required human/user authorization before external action.

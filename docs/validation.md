@@ -1,5 +1,37 @@
 # Validation record
 
+## 0.6.0 saved CI observations — 2026-10-28 MYT
+
+Local macOS arm64 / Node.js v24.18.1 checks passed: 124 tests, 47 deterministic
+workflows, five examples, custom lint, build, built-package checks and whitespace checks.
+The new CI example/evaluations are explicitly synthetic; they do not run GitHub, a
+test job or a publication. The existing sender-check examples still run known toy tests.
+
+The new CI module measured 100% lines/branches/functions. Aggregate source branches
+99.69%, all source lines/functions 100%; core branches 99.01%. Plain JS has no separate
+TypeScript checker. Production imports remain local modules plus fs/path/crypto, with
+no network/subprocess/dynamic evaluation. Project runtime/dev/optional dependencies zero;
+no third-party vulnerability scanner result is claimed.
+
+The old temporary validator environment was incomplete. A new isolated temporary Python
+environment installed PyYAML 6.0.3 and skills-ref 0.1.1 from official PyPI; system Python,
+project dependencies and npm work were unchanged. Both validators then accepted all four
+source and built-package skills (16 checks). Actual temporary tool versions are recorded
+in the private release evidence; no unrun validator success is claimed.
+
+Independent review returned GO: full 124-test suite, static check, CI example/evaluation
+and 21 independent probes passed. Pending/invalid/missing evidence prevented a synthetic
+same-invocation follow-up, which proceeded only for complete matching claims. Wrong
+context, mixed attempts, ambiguous/missing jobs, exact expiry, guarded controls and inert
+metadata instructions stayed honest; reports/errors did not reflect private values.
+This is not release approval, remote authentication or model-level effectiveness evidence.
+
+A read-only contract probe collected minimal actual metadata from already-public v0.5.0
+branch/tag runs and passed the new local review. This is separate from v0.6.0 release
+verification. This release requires actual branch AND tag CI completion and a same-call
+stop-on-failed-proof fence before creation; exact chronology and downloaded asset bytes
+are recorded in the final report. Drafts remain outside source/build/release trees.
+
 ## 0.5.0 recipient-set composition — 2026-10-27 MYT
 
 Local macOS arm64 / Node.js v24.18.1 validation passed:

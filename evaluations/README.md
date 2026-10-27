@@ -1,5 +1,10 @@
 # Evaluation approach
 
+`node evaluations/ci.mjs` replays eight synthetic CI-observation tasks: complete, pending
+tag, wrong commit, mixed attempt, missing job, exact freshness expiry, injected job name
+and malformed control. `node examples/ci.mjs` separately demonstrates a conditional
+counter-only fence stopping pending/invalid evidence. It performs no remote or publication action.
+
 `node evaluations/recipient-sets.mjs` adds eight mapped-set workflows: complete coverage,
 missing required check, original-record conflict, omitted evidence mapping, changed log,
 blocked state, expiry without deletion and inert injected content. The existing set-review

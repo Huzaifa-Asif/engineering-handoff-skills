@@ -72,25 +72,25 @@ for i in 0..<6 {
   p.line(to:NSPoint(x:1672,y:0)); p.line(to:NSPoint(x:0,y:0)); p.close()
   color(i % 2 == 0 ? 0x10151C : 0x05090F,0.55).setFill(); p.fill()
 }
-text("ENGINEERING SKILLS  •  RECIPIENT CHECK SETS",96,70,30,gold,.semibold)
+text("ENGINEERING HANDOFFS  •  CI OBSERVATIONS",96,70,30,gold,.semibold)
 
 panel(112,211,400,182,cyan)
-text("UNIT OBSERVATION",140,289,25,white,.bold)
-pill("source + unit evidence",140,332,340,cyan)
-panel(112,419,400,182,cyan)
-text("SYNTAX OBSERVATION",140,497,25,white,.bold)
-pill("source + syntax log",140,540,340,cyan)
+text("BRANCH OBSERVATION",140,289,25,white,.bold)
+pill("completed • success",140,332,340,cyan)
+panel(112,419,400,182,gold)
+text("TAG OBSERVATION",140,497,25,white,.bold)
+pill("in progress • hold",140,540,340,gold)
 
 arrow(530,410,594,410)
 panel(612,263,448,300,gold)
-text("RECIPIENT PLACEMENTS",640,345,25,white,.bold)
-text("One map for the artifact set",640,395,23,muted)
-pill("Keep original records",640,448,387,gold)
+text("MATCH THE CONTEXT",640,345,25,white,.bold)
+text("commit • refs • attempts",640,395,23,muted)
+pill("Required jobs + freshness",640,448,387,gold)
 
 arrow(1078,410,1142,410)
 panel(1160,224,400,374,cyan)
-text("REQUIRED SET",1188,307,25,white,.bold)
-let labels = ["Missing checks?", "Original conflicts?", "Local consistency only"]
+text("LOCAL REVIEW",1188,307,25,white,.bold)
+let labels = ["Pending stays pending", "Stop on failed proof", "Approval not granted"]
 for (i,label) in labels.enumerated() {
   let y = CGFloat(368+i*61)
   let tint = i == 2 ? gold : cyan
@@ -99,8 +99,8 @@ for (i,label) in labels.enumerated() {
 }
 line(1189,547,1526,547,color(0x30435F),1)
 
-text("Moved files. Required checks.",96,717,72,white,.bold)
-text("Keep source records. Review the whole handoff.",100,816,31,gold,.medium)
+text("Green branch. Pending tag.",96,717,72,white,.bold)
+text("Check both observations before the next step.",100,816,31,gold,.medium)
 NSGraphicsContext.restoreGraphicsState()
 let output = CommandLine.arguments.count > 1 ? CommandLine.arguments[1] : "campaign/cover.png"
 try bitmap.representation(using: .png, properties: [:])!.write(to:URL(fileURLWithPath:output))

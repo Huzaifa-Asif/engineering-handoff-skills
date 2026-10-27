@@ -1,6 +1,6 @@
 # Security
 
-Version 0.5.x is the current supported line; earlier releases are retained as history.
+Version 0.6.x is the current supported line; earlier releases are retained as history.
 This utility checks local byte consistency;
 it is not a security approval, sandbox, secret scanner or attestation verifier. Use it
 on a trusted stable filesystem and review selected data before sharing.

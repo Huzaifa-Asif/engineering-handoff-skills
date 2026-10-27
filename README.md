@@ -8,6 +8,9 @@ authorized check, preserve its exact evidence, then review one manifest or a req
 set at the original or intentionally relocated paths. Original conflicts, hashes,
 bindings, statuses, capture times and expiry survive without merging or recapture.
 The helper never executes checks.
+For saved branch/tag CI claims, `review-ci` compares explicit context, required jobs,
+run attempts, completeness and freshness. Its outcome is local evidence consistency,
+with no remote authentication or release approval. See [CI observations](docs/ci-observations.md).
 
 A saved “tests passed” log is easy to carry forward after the source changes. This tool
 preserves the source hashes recorded at observation time, compares them with the handoff,
@@ -30,6 +33,7 @@ node examples/run.mjs
 node examples/observe.mjs
 node examples/review-set.mjs
 node examples/transfer.mjs
+node examples/ci.mjs
 ```
 
 The example captures synthetic files, verifies consistency, changes a deliverable and
@@ -60,6 +64,22 @@ Capture output includes paths and hashes. Verification output is redacted by con
   "remoteState": "not-verified"
 }
 ```
+
+## Review saved CI claims before a dependent step
+
+```sh
+node bin/handoff.mjs review-ci <root> ci-request.json
+```
+
+Select exact expected repository/workflow/commit, branch/tag refs, required job names,
+freshness and two minimal observations. Exit 0 means local claims match, 2 attention,
+1 invalid input/operational error. A successful branch does not substitute for a pending
+tag; mixed attempts, missing jobs and expired observations remain unfinished. Keep any
+dependent action behind an explicit conditional that stops on failures; merely placing
+it in the next tool call does not enforce a gate. A consistent report grants no permission.
+Live provenance, signatures/tag target, artifacts and required approvals remain separate.
+See [complete schema/collection/error/assurance guidance](docs/ci-observations.md).
+`node examples/ci.mjs` is fully synthetic and performs no remote verification/publication.
 
 ## Receive artifacts under different paths
 

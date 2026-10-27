@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.6.0 — 2026-10-28 MYT
+
+- Add bounded review-ci command/API for explicit saved branch/tag observations, checking
+  repository/workflow/commit/refs/event, required jobs, run/attempt context and freshness.
+- Refuse to promote pending, incomplete, ambiguous or mixed observations; emit fixed
+  reports that disclaim remote authenticity, test execution, publication and approval.
+- Extend existing verify skill, add synthetic conditional-fence example and regression/
+  workflow evaluations. No network, process execution or publisher added to the core.
+- Preserve existing formats/commands/four skills, MIT, release history and zero dependencies.
+
 ## 0.5.0 — 2026-10-27 MYT
 
 - Extend review-set with optional exhaustive recipient placements across the artifact
